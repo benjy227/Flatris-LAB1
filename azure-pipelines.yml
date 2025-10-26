@@ -22,9 +22,10 @@ steps:
 # 2️⃣ Verify Node & npm versions
 # -----------------------------
 - script: |
-    node -v
-    npm -v
-  displayName: 'Verify Node.js & npm'
+    npm install
+    npm run build
+  displayName: 'Install npm packages and build'
+ 
 
 # -----------------------------
 # 3️⃣ Install dependencies and build

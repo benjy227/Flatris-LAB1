@@ -4,17 +4,41 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+- master   # or your default branch
 
-pool: MyWindowsAgentPool
+pool:
+  name: MyWindowsAgentPool   # Your self-hosted agent pool
 
 steps:
+# -----------------------------
+# 1️⃣ Install Node.js 18
+# -----------------------------
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
-  displayName: 'Install Node.js'
+  displayName: 'Install Node.js 18'
 
+# -----------------------------
+# 2️⃣ Verify Node & npm versions
+# -----------------------------
 - script: |
-    npm install
+    node -v
+    npm -v
+  displayName: 'Verify Node.js & npm'
+
+# -----------------------------
+# 3️⃣ Install dependencies and build
+# -----------------------------
+- script: |
+    npm ci            # Use ci for clean install
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Install npm packages and build'
+  env:
+    NODE_ENV: production    # Ensure production environment
+
+# -----------------------------
+# 4️⃣ Optional: Run tests
+# -----------------------------
+- script: |
+    npm test
+  displayName: 'Run tests'
